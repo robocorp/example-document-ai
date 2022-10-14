@@ -5,6 +5,8 @@ tasks:
   # Task names here are used when executing the bots, so renaming these is recommended.
   Document AI Google:
     robotTaskName: Document AI Google
+  Document AI Base64:
+    robotTaskName: Document AI Base64
 
 condaConfigFile: conda.yaml
 
