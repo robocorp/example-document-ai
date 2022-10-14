@@ -2,6 +2,7 @@
 Documentation       Intelligent Document Processing using various document
 ...    understanding engines.
 
+Library    Collections
 Library    RPA.DocumentAI
 
 
@@ -22,4 +23,6 @@ Document AI Google
 
 Document AI Base64
     Init Engine    base64ai    vault=document_ai:base64ai
-    Predict    ${INVOICE_PNG_URL}    mock=${True}
+    Predict    ${INVOICE_PNG_URL}    mock=${False}
+    ${data} =    Get Result
+    Log List    ${data}
