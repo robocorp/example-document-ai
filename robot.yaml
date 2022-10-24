@@ -7,6 +7,10 @@ tasks:
     robotTaskName: Document AI Google
   Document AI Base64:
     robotTaskName: Document AI Base64
+  Document AI Nanonets:
+    robotTaskName: Document AI Nanonets
+  Document AI All:
+    robotTaskName: Document AI All
 
 condaConfigFile: conda.yaml
 
