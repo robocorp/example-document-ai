@@ -14,7 +14,8 @@
       }
     },
     "files": {
-      "invoice.pdf": "parallels.pdf"
+      "invoice.pdf": "parallels.pdf",
+      "invoice.png": "parallels.png"
     }
   },
   {
