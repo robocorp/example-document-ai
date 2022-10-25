@@ -4,6 +4,7 @@ Documentation       Intelligent Document Processing using various document
 
 Library    Collections
 Library    RPA.DocumentAI
+Library    RPA.Robocorp.WorkItems
 
 
 *** Variables ***
@@ -25,6 +26,25 @@ Init Base64
 
 Init Nanonets
     Init Engine    nanonets    vault=document_ai:nanonets
+
+
+Process Document
+    &{engines} =    Get Work Item Variables
+    FOR    ${engine}    IN    @{engines}
+        Log    Scanning with engine: ${engine}...
+        ${data} =    Get From Dictionary    ${engines}    ${engine}
+        &{auth} =    Get From Dictionary    ${data}    auth
+        Init Engine    ${engine}    &{auth}
+
+        &{predict} =    Get From Dictionary    ${data}    predict
+        @{invoices} =    Get Work Item Files    invoice.*    dirname=${OUTPUT_DIR}
+        FOR    ${invoice}    IN    @{invoices}
+            Log    Processing file: ${invoice}
+            Predict    ${invoice}    &{predict}
+            ${data} =    Get Result
+            Log List    ${data}
+        END
+    END
 
 
 *** Tasks ***
@@ -84,3 +104,7 @@ Document AI All
         ${data} =    Get Result
         Log List    ${data}
     END
+
+
+Document AI Work Items
+    For Each Input Work Item    Process Document    return_results=${False}

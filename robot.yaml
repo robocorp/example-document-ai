@@ -11,6 +11,8 @@ tasks:
     robotTaskName: Document AI Nanonets
   Document AI All:
     robotTaskName: Document AI All
+  Document AI Work Items:
+    robotTaskName: Document AI Work Items
 
 condaConfigFile: conda.yaml
 
