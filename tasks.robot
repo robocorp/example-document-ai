@@ -32,11 +32,11 @@ Process Document
     &{engines} =    Get Work Item Variables
     FOR    ${engine}    IN    @{engines}
         Log    Scanning with engine: ${engine}...
-        ${data} =    Get From Dictionary    ${engines}    ${engine}
-        &{auth} =    Get From Dictionary    ${data}    auth
+        ${config} =    Get From Dictionary    ${engines}    ${engine}
+        &{auth} =    Get From Dictionary    ${config}    auth
         Init Engine    ${engine}    &{auth}
 
-        &{predict} =    Get From Dictionary    ${data}    predict
+        &{predict} =    Get From Dictionary    ${config}    predict
         @{invoices} =    Get Work Item Files    invoice.*    dirname=${OUTPUT_DIR}
         FOR    ${invoice}    IN    @{invoices}
             Log    Processing file: ${invoice}
