@@ -101,8 +101,8 @@ Document AI All
 
         &{params} =    Get From Dictionary    ${engines}    ${engine}
         Predict    ${INVOICE_PNG_FILE}    &{params}
-        ${data} =    Get Result
-        Log List    ${data}
+        ${data} =    Get Result    extended=${True}
+        Log    ${data}
     END
 
 
