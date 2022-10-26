@@ -41,7 +41,7 @@ Process Document
         FOR    ${invoice}    IN    @{invoices}
             Log    Processing file: ${invoice}
             Predict    ${invoice}    &{predict}
-            ${data} =    Get Result
+            @{data} =    Get Result
             Log List    ${data}
         END
     END
@@ -54,7 +54,7 @@ Document AI Google
 
     Predict    ${INVOICE_PDF_FILE}    model=df1d166771005ff4
     ...    project_id=complete-agency-347912    region=${region}
-    ${data} =    Get Result
+    @{data} =    Get Result
     Log List    ${data}
 
 
@@ -62,7 +62,7 @@ Document AI Base64
     [Setup]    Init Base64
 
     Predict    ${INVOICE_PNG_URL}    mock=${False}
-    ${data} =    Get Result
+    @{data} =    Get Result    extended=${True}
     Log List    ${data}
 
 
@@ -70,7 +70,7 @@ Document AI Nanonets
     [Setup]    Init Nanonets
 
     Predict    ${INVOICE_PDF_FILE}    model=858e4b37-6679-4552-9481-d5497dfc0b4a
-    ${data} =    Get Result
+    @{data} =    Get Result
     Log List    ${data}
 
 
@@ -101,8 +101,8 @@ Document AI All
 
         &{params} =    Get From Dictionary    ${engines}    ${engine}
         Predict    ${INVOICE_PNG_FILE}    &{params}
-        ${data} =    Get Result    extended=${True}
-        Log    ${data}
+        @{data} =    Get Result
+        Log List    ${data}
     END
 
 
