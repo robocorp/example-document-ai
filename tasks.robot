@@ -29,7 +29,11 @@ Init Nanonets
 
 
 Process Document
-    &{engines} =    Get Work Item Variables
+    &{payload} =    Get Work Item Variables
+    &{fake_email} =    Create Dictionary    body    ${payload}
+    &{parsed_email} =    Get Work Item Variable    email    ${fake_email}
+    &{engines} =    Set Variable    ${parsed_email}[body]
+
     FOR    ${engine}    IN    @{engines}
         Log    Scanning with engine: ${engine}...
         ${config} =    Get From Dictionary    ${engines}    ${engine}
