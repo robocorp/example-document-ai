@@ -10,14 +10,16 @@ Library    RPA.Robocorp.WorkItems
 *** Variables ***
 ${INVOICE_PDF_FILE}    devdata${/}parallels.pdf
 ${INVOICE_PNG_FILE}    devdata${/}parallels.png
+${INVOICE_PNG_URL}
+...    https://github.com/robocorp/example-document-ai/raw/master/devdata/parallels.png
 
-${INVOICE_PNG_URL}    https://github.com/robocorp/example-document-ai/raw/master/devdata/parallels.png
+${GOOGLE_REGION}    eu
 
 
 *** Keywords ***
 Init Google
-    [Arguments]    ${region}
-    Init Engine    google    vault=document_ai:serviceaccount    region=${region}
+    Init Engine    google    vault=document_ai:serviceaccount
+    ...    region=${GOOGLE_REGION}
 
 
 Init Base64
@@ -53,16 +55,19 @@ Process Document
 
 *** Tasks ***
 Document AI Google
-    ${region} =    Set Variable    eu  # default 'us'
-    Init Google    ${region}
+    [Documentation]    Analyze a PDF with a specific model of a pre-configured project
+    ...    in a specific region and retrieve the detected fields only as a result.
+    [Setup]    Init Google
 
     Predict    ${INVOICE_PDF_FILE}    model=df1d166771005ff4
-    ...    project_id=complete-agency-347912    region=${region}
+    ...    project_id=complete-agency-347912    region=${GOOGLE_REGION}
     @{data} =    Get Result
     Log List    ${data}
 
 
 Document AI Base64
+    [Documentation]    Analyze a remote image with an automatically detected model and
+    ...    retrieve all the extensive details as a result.
     [Setup]    Init Base64
 
     Predict    ${INVOICE_PNG_URL}    mock=${False}
@@ -71,6 +76,8 @@ Document AI Base64
 
 
 Document AI Nanonets
+    [Documentation]    Analyze a PDF with a specialized model and retrieve the detected
+    ...    fields only as a result.
     [Setup]    Init Nanonets
 
     Predict    ${INVOICE_PDF_FILE}    model=858e4b37-6679-4552-9481-d5497dfc0b4a
@@ -79,9 +86,11 @@ Document AI Nanonets
 
 
 Document AI All
+    [Documentation]    Use all the supported engines one by one to extract detected
+    ...    fields in the same screenshot of the PDF file. (containing invoice data)
+
     # Initialize all the engines one by one. (authorization)
-    ${google_region} =    Set Variable    eu
-    Init Google    ${google_region}
+    Init Google
     Init Base64
     Init Nanonets
 
@@ -89,7 +98,7 @@ Document AI All
     &{google_params} =    Create Dictionary
     ...    model    df1d166771005ff4
     ...    project_id    complete-agency-347912
-    ...    region    ${google_region}
+    ...    region    ${GOOGLE_REGION}
     &{base64_params} =    Create Dictionary
     ...    model    finance/invoice
     &{nanonets_params} =    Create Dictionary
@@ -111,4 +120,7 @@ Document AI All
 
 
 Document AI Work Items
+    [Documentation]    Analyze documents with data and configuration from the received
+    ...    input Work Items, be them created in Control Room, passed from a previous
+    ...    Step or collected from a triggering e-mail.
     For Each Input Work Item    Process Document    return_results=${False}
